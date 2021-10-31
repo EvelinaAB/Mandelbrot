@@ -9,7 +9,7 @@ import java.awt.Graphics;
 
 /**
  *
- * @author politecnica
+ * @author ewelina
  */
 public class Mandelbrot extends javax.swing.JFrame {
 
@@ -32,6 +32,8 @@ public class Mandelbrot extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         panel = new javax.swing.JPanel();
         jButton2 = new javax.swing.JButton();
+        jSpinner1 = new javax.swing.JSpinner();
+        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Conjunto de Mandelbrot");
@@ -75,6 +77,8 @@ public class Mandelbrot extends javax.swing.JFrame {
             }
         });
 
+        jLabel2.setText("Número trabajadores:");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -84,7 +88,11 @@ public class Mandelbrot extends javax.swing.JFrame {
                 .addComponent(jButton1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton2)
-                .addContainerGap(256, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 110, Short.MAX_VALUE))
             .addComponent(panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
@@ -92,9 +100,12 @@ public class Mandelbrot extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addComponent(panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jButton1)
+                        .addComponent(jButton2)
+                        .addComponent(jLabel2))
+                    .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -103,27 +114,28 @@ public class Mandelbrot extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         pintaMandelbrot();
+
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    
     int cx1, cy1;
     int cx2, cy2;
-    
+
     private void panelMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelMousePressed
-        cx1=cx2=evt.getX();
-        cy1=cy2=evt.getY();
+        cx1 = cx2 = evt.getX();
+        cy1 = cy2 = evt.getY();
     }//GEN-LAST:event_panelMousePressed
 
-    
+
     private void panelMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelMouseReleased
-        cx2=evt.getX();
-        cy2=evt.getY();
-        
-        x1 = cx1*(x2 - x1)/panel.getWidth() + x1;
-        y1 = y1 - cy1*(y1 - y2)/panel.getHeight();
-        
-        x2 = cx2*(x2 - x1)/panel.getWidth() + x1;
-        y2 = y1 - cy2*(y1 - y2)/panel.getHeight();
+        cx2 = evt.getX();
+        cy2 = evt.getY();
+
+        x1 = cx1 * (x2 - x1) / panel.getWidth() + x1;
+        y1 = y1 - cy1 * (y1 - y2) / panel.getHeight();
+
+        x2 = cx2 * (x2 - x1) / panel.getWidth() + x1;
+        y2 = y1 - cy2 * (y1 - y2) / panel.getHeight();
 
         pintaMandelbrot();
     }//GEN-LAST:event_panelMouseReleased
@@ -134,25 +146,22 @@ public class Mandelbrot extends javax.swing.JFrame {
         g.setXORMode(Color.RED);
 
         g.drawRect(cx1, cy1, Math.abs(cx2 - cx1), Math.abs(cy2 - cy1));
-        
-        cx2=evt.getX();
-        cy2=evt.getY();
-     
+
+        cx2 = evt.getX();
+        cy2 = evt.getY();
+
         g.drawRect(cx1, cy1, Math.abs(cx2 - cx1), Math.abs(cy2 - cy1));
     }//GEN-LAST:event_panelMouseDragged
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         x1 = -2;
-        y1 =  1;
-        x2 =  1;
-        y2 = -1;        
-        
+        y1 = 1;
+        x2 = 1;
+        y2 = -1;
+
         pintaMandelbrot();
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    
-    
-    
     /**
      * @param args the command line arguments
      */
@@ -194,55 +203,60 @@ public class Mandelbrot extends javax.swing.JFrame {
             }
         });
     }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JSpinner jSpinner1;
     private javax.swing.JPanel panel;
     // End of variables declaration//GEN-END:variables
 
-    
-    private int mandelbrot(double x, double y){
-        double zn1r=0, zn1i=0;
-        double zn2r=0, zn2i=0;
-        int contador=0;
-        
-        while(contador<300 &&  (zn2r*zn2r + zn2i*zn2i) < 10000 ){
-            zn2r = zn1r*zn1r - zn1i*zn1i + x; 
-            zn2i = 2*zn1r*zn1i + y;
+    private int mandelbrot(double x, double y) {
+        double zn1r = 0, zn1i = 0;
+        double zn2r = 0, zn2i = 0;
+        int contador = 0;
+
+        while (contador < 300 && (zn2r * zn2r + zn2i * zn2i) < 10000) {
+            zn2r = zn1r * zn1r - zn1i * zn1i + x;
+            zn2i = 2 * zn1r * zn1i + y;
 
             zn1r = zn2r;
             zn1i = zn2i;
-            
+
             contador++;
         }
-        
+
         return contador;
     }
-    
-    
+
     double x1 = -2;
-    double y1 =  1;
-    double x2 =  1;
+    double y1 = 1;
+    double x2 = 1;
     double y2 = -1;
-    
-    
+
     private void pintaMandelbrot() {
+        int NUM_PROCESOS = (Integer) jSpinner1.getValue(); //guarda el valor de spinner en la variable NUM_PROCESOS
+//        System.out.println(NUM_PROCESOS);
+
         Graphics g = panel.getGraphics();
-        double x=0, y=0;
+        double x = 0, y = 0;
         int w = panel.getWidth();
-        int h = panel.getHeight();
-        
-        for(int i=0; i<panel.getWidth(); i++){
-            for(int j=0; j<panel.getHeight(); j++){
-                
-                x =  i * (x2 - x1)/w + x1;
-                y = y1 - j * (y1 - y2)/h;
-                
+        int h = panel.getHeight()/NUM_PROCESOS;
+
+        for (int i = 0; i < panel.getWidth(); i++) {
+            for (int j = 0; j < panel.getHeight(); j++) {
+
+                x = i * (x2 - x1) / w + x1;
+                y = y1 - j * (y1 - y2) / h;
+
                 int velocidad = mandelbrot(x, y);
-                
-                g.setColor(Color.getHSBColor((velocidad)/(float)160, 1, 1));
+
+                g.setColor(Color.getHSBColor((velocidad) / (float) 160, 1, 1));
                 g.drawRect(i, j, 1, 1);
             }
         }
+
+      
     }
 }
